@@ -8,14 +8,25 @@
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #121418;
+  /* background-color: white; */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  overflow: hidden;
 }
 .poppins-bold {
   font-family: "Poppins", serif;
   font-weight: 600;
   font-style: normal;
+}
+
+.cetner-absolute {
+  @apply left-[50%] -translate-x-[50%] top-[50%] -translate-y-[50%];
+}
+
+.mac-img {
+  background-image: url("/src/assets/wallpapers/mac.jpg");
 }

@@ -11,43 +11,42 @@ import "./dock.css";
 const DEFAULT_ITEMS = [
   {
     imgUrl:
-      "https://cdn.prod.website-files.com/66353278b7b527ba9bcf0b46/66354a9456f85796ef266e91_finder.webp",
+      "https://storage.googleapis.com/pr-newsroom-wp/1/2023/05/Spotify_Primary_Logo_RGB_Green.png",
     title: "notion",
     id: "1",
   },
   {
     imgUrl:
-      "https://cdn.prod.website-files.com/66353278b7b527ba9bcf0b46/66354a94cf750765e963ee5b_launchpad.webp",
+      "https://brandeps.com/logo-download/I/Instagram-Icon-logo-vector-01.svg",
     title: "notion",
     id: "2",
   },
   {
     imgUrl:
-      "https://cdn.prod.website-files.com/66353278b7b527ba9bcf0b46/66354a949f2c91a3f3c755d9_mail.webp",
+      "https://brandeps.com/logo-download/G/Google-Messages-logo-vector-01.svg",
     title: "notion",
     id: "3",
   },
   {
     imgUrl:
-      "https://cdn.prod.website-files.com/66353278b7b527ba9bcf0b46/66354a946959f44700f099f8_notes.webp",
+      "https://brandeps.com/icon-download/A/Apple-podcasts-icon-vector-01.svg",
     title: "notion",
     id: "4",
   },
   {
     imgUrl:
-      "https://cdn.prod.website-files.com/66353278b7b527ba9bcf0b46/66354a94f5ade81a4e6d8194_arc.webp",
+      "https://brandeps.com/icon-download/A/Apple-app-store-icon-vector-02.svg",
     title: "notion",
     id: "5",
   },
   {
-    imgUrl:
-      "https://cdn.prod.website-files.com/66353278b7b527ba9bcf0b46/66354a94acdc7744f40538d5_slack.webp",
+    imgUrl: "https://brandeps.com/icon-download/S/Slack-icon-vector-08.svg",
     title: "notion",
     id: "6",
   },
   {
     imgUrl:
-      "https://cdn.prod.website-files.com/66353278b7b527ba9bcf0b46/66354c06b18ca709f4d9172a_trash%20bin.webp",
+      "https://jablickar.cz/wp-content/uploads/2022/02/macos-ikonka-kose-2.png",
     title: "notion",
     id: "7",
   },
@@ -56,6 +55,14 @@ const DEFAULT_ITEMS = [
 const getIndicators = () => {
   return Array.from(
     document.querySelectorAll(`.indicator`) as unknown as HTMLElement[]
+  );
+};
+
+export const MacDockExample = () => {
+  return (
+    <div className="task-bar mac-img min-h-screen flex items-center justify-center bg-cover overflow-hidden relative ">
+      <MacDock />
+    </div>
   );
 };
 
@@ -89,6 +96,7 @@ const MacDock = () => {
 
     // Extract the dragged item and filter the list in a single pass
     let draggedItem: (typeof items)[number] | undefined;
+
     const copiedItems = items.filter((item) => {
       if (item.id === draggedItemId) {
         draggedItem = item;
@@ -109,9 +117,7 @@ const MacDock = () => {
     } else {
       copiedItems.splice(indexInsertion, 0, draggedItem);
     }
-
     setItems(copiedItems);
-    console.log(copiedItems.map((item) => item.id));
   };
 
   const getNearestIndicator = (
@@ -178,40 +184,31 @@ const MacDock = () => {
   const handleDragStart = (e: DragEvent, itemId: string) => {
     e.dataTransfer.setData("itemId", itemId.toString()); // Store the item's key or any relevant data
   };
-
   return (
-    <div className="task-bar mac-img min-h-screen flex items-center justify-center bg-cover overflow-hidden relative">
-      <motion.div
-        onDrop={handleDrop}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        ref={ref}
-        onMouseMove={handleMouseMovement}
-        onMouseLeave={() => mouseX.set(null)}
-        className="flex gap-3 p-3 bg-white/40 backdrop-blur-lg shadow-lg rounded-2xl absolute bbottom-0 ttranslate-y-[75%]  hhover:-translate-y-[20%] transition-all"
-      >
-        {items.map((item, idx) => (
-          <div key={item.id} className="flex">
-            {idx === items.length - 1 && (
-              <span
-                key={item.id + "span"}
-                className="flex-1 bg-amber-50/40 w-[2px] rounded-full "
-              />
-            )}
-            <DropIndicator beforeId={item.id} />
-            <DockItem
-              id={item.id}
-              handleDragStart={handleDragStart}
-              title={item.title}
-              imgUrl={item.imgUrl}
-              index={idx}
-              mouseX={mouseX}
-              totalItems={items.length}
-            />
-          </div>
-        ))}
-      </motion.div>
-    </div>
+    <motion.div
+      onDrop={handleDrop}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      ref={ref}
+      onMouseMove={handleMouseMovement}
+      onMouseLeave={() => mouseX.set(null)}
+      // absolute bottom-0 translate-y-[75%]  hover:-translate-y-[20%]
+      className="flex gap-3 p-3 bg-white/40 backdrop-blur-lg shadow-lg rounded-2xl  transition-all  absolute bottom-0 translate-y-[75%]  hover:-translate-y-[20%] left-[50%] -translate-x-[50%] "
+    >
+      {items.map((item, idx) => (
+        // <DropIndicator beforeId={item.id} />
+        <DockItem
+          key={item.id}
+          id={item.id}
+          handleDragStart={handleDragStart}
+          title={item.title}
+          imgUrl={item.imgUrl}
+          index={idx}
+          mouseX={mouseX}
+          totalItems={items.length}
+        />
+      ))}
+    </motion.div>
   );
 };
 
@@ -246,7 +243,7 @@ const DockItem = ({
     const distance = Math.abs(x - itemCenter);
 
     // Normalize distance: Closer items scale more, farther ones less
-    const maxScale = 1.3;
+    const maxScale = 1.1;
     const minScale = 1;
     const falloff = itemWidth * 1.2; // ✅ Increased range for smooth effect
 
@@ -269,29 +266,30 @@ const DockItem = ({
 
   return (
     <motion.div
-      style={{ scale: scale, transitionDuration: "inherit" }}
-      layout
+      ref={parentRef}
+      style={{ scale }}
       layoutId={id}
+      layout={true}
       onDragStart={(e) => handleDragStart(e as unknown as DragEvent, id)}
       draggable={true}
-      ref={parentRef}
       className="w-12 h-12 item cursor-pointer relative"
       whileHover={{
-        // translateY: -10,
-        marginLeft: "8px",
-        marginRight: "8px",
+        translateY: -5, // ✅ Keep only translateY for hover effect
       }}
       transition={{
-        // type: "spring",
-        duration: 0.1,
+        duration: 0.15, // ✅ Slightly smoother animation
+        layout: {
+          type: "spring",
+        },
       }}
       onClick={handleClickAnimation}
     >
+      <DropIndicator beforeId={id} />
       <img
         ref={scope}
         src={imgUrl}
         alt={title}
-        className="w-full h-full object-contain"
+        className="w-full h-full object-cover"
       />
     </motion.div>
   );
@@ -301,9 +299,9 @@ type DropIndicatorProps = {
 };
 const DropIndicator = ({ beforeId }: DropIndicatorProps) => {
   return (
-    <div
+    <span
       data-before={beforeId?.toString() || "-1"}
-      className="indicator h-full w-[4px] bg-violet-400 opacity-0 transition-all duration-150"
+      className="absolute indicator h-full  w-[6px] rounded-full -left-[10px] bg-amber-50/100 opacity-0 transition-all duration-150"
     />
   );
 };
