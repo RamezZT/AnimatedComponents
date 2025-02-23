@@ -103,7 +103,7 @@ const Window = ({ children, styles }: WindowProps) => {
     <AnimatePresence>
       {isOpened && (
         <motion.div
-          className="absolute overflow-hidden cetner-absolute"
+          className="absolute overflow-hidden center-absolute"
           key="window"
           exit={{ translateY: "800px", opacity: 0 }}
           animate={{ translateY: 0, opacity: 1 }}
@@ -114,7 +114,7 @@ const Window = ({ children, styles }: WindowProps) => {
           style={{ willChange: "transform, opacity" }}
           onAnimationComplete={() => console.log("Animation complete")}
         >
-          <div ref={modalRef} className={`${styles ?? "s"}`}>
+          <div ref={modalRef} className={`${styles ?? ""}`}>
             {children}
           </div>
         </motion.div>

@@ -67,7 +67,7 @@ const MacBook = ({ children }: MacBookProps) => {
             transition: SCREENSTRANSITION,
           }}
           //   animate={{ opacity: showSpinner.get() }}
-          className="loader !absolute cetner-absolute"
+          className="loader !absolute center-absolute"
         />
 
         <motion.img
@@ -77,7 +77,7 @@ const MacBook = ({ children }: MacBookProps) => {
           }}
           src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Apple_logo_grey.svg/1010px-Apple_logo_grey.svg.png"
           alt=""
-          className="w-24 h-24 object-contain absolute cetner-absolute "
+          className="w-24 h-24 object-contain absolute center-absolute "
         />
 
         <motion.div
