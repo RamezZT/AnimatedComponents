@@ -6,7 +6,6 @@ import ModalExample from "./examples/ModalExample";
 import AppleButton from "./components/apple/AppleButton";
 import Layout from "./Layout";
 import SharedLayoutAnimation from "./randoms/AnimatingLayouts/SharedLayoutAnimation";
-import MacWindow from "./components/windows/MacWindow";
 
 const App = () => {
   return (
@@ -19,7 +18,7 @@ const App = () => {
             <MacBook>
               <MacBook.Screen styles="mac-img">
                 <MacDock />
-                <MacWindow />
+                {/* <MacWindow /> */}
               </MacBook.Screen>
             </MacBook>
           }

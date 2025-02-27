@@ -7,47 +7,48 @@ import {
   useAnimate,
 } from "framer-motion";
 import "./dock.css";
+import MacWindow from "../windows/MacWindow";
 
 const DEFAULT_ITEMS = [
   {
     imgUrl:
       "https://storage.googleapis.com/pr-newsroom-wp/1/2023/05/Spotify_Primary_Logo_RGB_Green.png",
-    title: "notion",
+    title: "Spotify",
     id: "1",
   },
   {
     imgUrl:
       "https://brandeps.com/logo-download/I/Instagram-Icon-logo-vector-01.svg",
-    title: "notion",
+    title: "Instagram",
     id: "2",
   },
   {
     imgUrl:
       "https://brandeps.com/logo-download/G/Google-Messages-logo-vector-01.svg",
-    title: "notion",
+    title: "Google Messages",
     id: "3",
   },
   {
     imgUrl:
       "https://brandeps.com/icon-download/A/Apple-podcasts-icon-vector-01.svg",
-    title: "notion",
+    title: "Apple Podcasts",
     id: "4",
   },
   {
     imgUrl:
       "https://brandeps.com/icon-download/A/Apple-app-store-icon-vector-02.svg",
-    title: "notion",
+    title: "Apple App Store",
     id: "5",
   },
   {
     imgUrl: "https://brandeps.com/icon-download/S/Slack-icon-vector-08.svg",
-    title: "notion",
+    title: "Slack",
     id: "6",
   },
   {
     imgUrl:
       "https://jablickar.cz/wp-content/uploads/2022/02/macos-ikonka-kose-2.png",
-    title: "notion",
+    title: "MacOS Trash",
     id: "7",
   },
 ];
@@ -193,7 +194,7 @@ const MacDock = () => {
       onMouseMove={handleMouseMovement}
       onMouseLeave={() => mouseX.set(null)}
       // absolute bottom-0 translate-y-[75%]  hover:-translate-y-[20%]
-      className="flex gap-3 p-3 bg-white/40 backdrop-blur-lg shadow-lg rounded-2xl  transition-all  absolute bottom-0 translate-y-[75%]  hover:-translate-y-[20%] left-[50%] -translate-x-[50%] "
+      className="flex z-[1000] gap-3 p-3 bg-white/40 backdrop-blur-lg shadow-lg rounded-2xl  transition-all  absolute bottom-0 left-[50%] -translate-x-[50%] "
     >
       {items.map((item, idx) => (
         // <DropIndicator beforeId={item.id} />
@@ -235,7 +236,6 @@ const DockItem = ({
   const [scope, animate] = useAnimate();
   const scale = useTransform(mouseX, (x) => {
     if (x === null || !parentRef.current) return 1; // Default scale
-
     const { width } = parentRef.current.parentElement!.getBoundingClientRect(); // ✅ Use parent div width
     const itemWidth = width / totalItems;
     const itemCenter = index * itemWidth + itemWidth / 2; // ✅ Correct center calculation
@@ -268,7 +268,6 @@ const DockItem = ({
     <motion.div
       ref={parentRef}
       style={{ scale }}
-      layoutId={id}
       layout={true}
       onDragStart={(e) => handleDragStart(e as unknown as DragEvent, id)}
       draggable={true}
@@ -282,15 +281,23 @@ const DockItem = ({
           type: "spring",
         },
       }}
-      onClick={handleClickAnimation}
     >
       <DropIndicator beforeId={id} />
-      <img
-        ref={scope}
-        src={imgUrl}
-        alt={title}
-        className="w-full h-full object-cover"
-      />
+      <MacWindow
+        layoutId={id}
+        windowIcon={
+          <motion.img
+            onClick={handleClickAnimation}
+            ref={scope}
+            src={imgUrl}
+            alt={title}
+            className="object-cover h-full w-full"
+          />
+        }
+        windowContent={<h1>{title}</h1>}
+      >
+        {/* we only pass the icon */}
+      </MacWindow>
     </motion.div>
   );
 };

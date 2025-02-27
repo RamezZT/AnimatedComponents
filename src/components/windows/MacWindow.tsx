@@ -1,89 +1,148 @@
-import React, { CSSProperties, useState } from "react";
-import { AnimatePresence, MotionStyle, motion } from "framer-motion";
+import { ReactNode, RefObject, useEffect, useRef, useState } from "react";
+import { MotionStyle, motion } from "framer-motion";
+import { createPortal } from "react-dom";
 
-const MacWindow = () => {
-  const [opened, setOpened] = useState(true);
+type MacWindowProps = {
+  windowIcon: ReactNode;
+  windowContent: ReactNode;
+  layoutId: string;
+};
+
+const MacWindow = ({ windowIcon, windowContent, layoutId }: MacWindowProps) => {
+  const [opened, setOpened] = useState(false);
+  const [screen, setScreen] = useState<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    setScreen(document.querySelector(".mac-img") as HTMLDivElement);
+  }, []);
+  const parentRef = useRef<HTMLDivElement | null>(null);
+  const handleClose = () => setOpened(false);
+  // return windowIcon;
   return (
     <motion.div
+      draggable="false"
+      ref={parentRef}
       layout
-      className="bg-gray-500 relative h-full w-full flex items-end justify-center flex-col"
+      className="relative h-full w-full flex items-end justify-center flex-col"
     >
-      <motion.div
-        layout
-        className="self-center flex items-center flex-1 w-full justify-center"
-      >
-        {opened && (
-          <motion.div
-            layoutId="window"
-            style={{
-              width: 600,
-              height: 400,
-              opacity: 1,
-              borderRadius: 10,
-              overflow: "hidden",
-            }}
-            transition={{
-              type: "spring",
-            }}
-            className="bg-[#dfdfde] mac-window-shadow"
-          >
-            <div className="navbar flex gap-2 p-4 border-4 border-[#9d9d9d] border-x-0 border-t-0 ">
-              <button className="rounded-full w-6 h-6 bg-red-500" />
-              <button className="rounded-full w-6 h-6 bg-gray-500" />
-              <button className="rounded-full w-6 h-6 bg-green-500" />
-            </div>
-            <div className="bg-white text-black w-full h-full">
-              <h1 className="text-3xl font-semibold">Ramez Tayem</h1>
-            </div>
-          </motion.div>
+      {screen &&
+        opened &&
+        createPortal(
+          <motion.div layout className="w-full justify-center">
+            {opened && screen && (
+              <Modal
+                windowContent={windowContent}
+                drag={true}
+                layoutId={layoutId}
+                ref={parentRef}
+                handleClose={handleClose}
+                style={{
+                  width: 600,
+                  height: 400,
+                  opacity: 1,
+                  borderRadius: 10,
+                  overflow: "hidden",
+                  // position: "absolute",
+                  left: "200px",
+                  top: "100px",
+                  // translateX: "-50%",
+                  // translateY: "-50%",
+                }}
+              />
+            )}
+          </motion.div>,
+          screen!
         )}
-      </motion.div>
 
-      <div className="flex gap-2 w-full justify-center items-center">
-        {!opened && (
-          <motion.div
-            layoutId="window"
-            style={{
-              width: 2,
-              height: 2,
-              opacity: 0.5,
-              borderRadius: 100,
-            }}
-            transition={{
-              type: "spring",
-            }}
-          ></motion.div>
-        )}
-        <button
-          onClick={() => setOpened((prev) => !prev)}
-          className="bg-blue-500 rounded-full px-4 py-2 text-2xl absolute bottom-0"
-        >
-          Click me
-        </button>
-      </div>
+      {/* <div className="flex gap-2 w-full justify-center items-center"> */}
+      {!opened && (
+        <Modal
+          windowContent={windowContent}
+          drag={false}
+          layoutId={layoutId}
+          ref={parentRef}
+          handleClose={handleClose}
+          style={{
+            width: "20px",
+            height: "20px",
+            opacity: 0,
+            // borderRadius: 10,
+            // position: "absolute",
+
+            // width: 600,
+            // height: 400,
+            // opacity: 0,
+            // borderRadius: 10,
+            // overflow: "hidden",
+            // // position: "absolute",
+            // left: "200px",
+            // top: "100px",
+            // // translateX: "-50%",
+            // // translateY: "-50%",
+          }}
+        />
+      )}
+      {/* <button onClick={() => setOpened((prev) => !prev)}>{children}</button> */}
+      <span
+        onClick={() => {
+          setOpened((prev) => !prev);
+        }}
+      >
+        {windowIcon}
+      </span>
+      {/* </div> */}
     </motion.div>
   );
 };
 
-const modal = ({ style }: { style?: MotionStyle }) => {
+type ModalProps = {
+  style?: MotionStyle;
+  handleClose: () => void;
+  onMaxmize?: () => void;
+  children?: ReactNode;
+  ref?: RefObject<HTMLDivElement | null>;
+  layoutId: string;
+  drag: boolean;
+  windowContent: ReactNode;
+};
+
+const Modal = ({
+  style,
+  handleClose,
+  windowContent,
+  // ref,
+  layoutId,
+  drag,
+}: ModalProps) => {
   return (
     <motion.div
-      layoutId="window"
-      style={style}
-      transition={{
-        type: "spring",
-      }}
-      className="bg-[#dfdfde] mac-window-shadow"
+      drag={drag}
+      dragMomentum={false}
+      layout
+      layoutId={layoutId}
+      style={{ ...style }}
+      className="bg-[#dfdfde] mac-window-shadow flex flex-col"
+      transition={
+        {
+          // duration: 2,
+        }
+      }
     >
-      <div className="navbar flex gap-2 p-4 border-4 border-[#9d9d9d] border-x-0 border-t-0 ">
-        <button className="rounded-full w-6 h-6 bg-red-500" />
+      <div className="navbar flex gap-2 p-4 border-4 z-10 border-[#9d9d9d] cursor-pointer border-x-0 border-t-0 ">
+        <button
+          onClick={handleClose}
+          className="rounded-full w-6 h-6 bg-red-500 cursor-pointer hover:scale-105"
+        />
         <button className="rounded-full w-6 h-6 bg-gray-500" />
         <button className="rounded-full w-6 h-6 bg-green-500" />
       </div>
-      <div className="bg-white text-black w-full h-full">
-        <h1 className="text-3xl font-semibold">Ramez Tayem</h1>
+
+      {/* Content */}
+      <div className="bg-white relative text-black flex-1 w-full">
+        {windowContent}
       </div>
     </motion.div>
   );
 };
+
 export default MacWindow;
