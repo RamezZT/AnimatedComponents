@@ -1,13 +1,8 @@
 import { useRef, DragEvent, useState } from "react";
-import {
-  motion,
-  useMotionValue,
-  useTransform,
-  MotionValue,
-  useAnimate,
-} from "framer-motion";
+import { motion, useMotionValue } from "framer-motion";
 import "./dock.css";
-import MacWindow from "../windows/MacWindow";
+import { DockItem } from "./DockItem";
+import DockItemWindow from "./DockItemWindow";
 
 const DEFAULT_ITEMS = [
   {
@@ -77,12 +72,12 @@ const MacDock = () => {
     const { clientX } = e;
     const { left } = ref.current.getBoundingClientRect();
 
-    // Normalize mouse position within the dock
-    const relativeX = clientX - left;
-    mouseX.set(relativeX); // ✅ Setting the mouse position
+    // Normalize mouse position, ensure it doesn't go negative
+    const relativeX = Math.max(0, clientX - left);
+    mouseX.set(relativeX);
   };
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     removeHighlights();
 
     const target = (e.target as HTMLElement).closest(".item");
@@ -122,7 +117,7 @@ const MacDock = () => {
   };
 
   const getNearestIndicator = (
-    e: React.DragEvent,
+    e: DragEvent,
     indicators: HTMLElement[]
   ): HTMLDivElement | null => {
     // Get the mouse position from the drag event
@@ -155,7 +150,7 @@ const MacDock = () => {
     return nearestIndicator;
   };
 
-  const handleDragOver = (e: React.DragEvent) => {
+  const handleDragOver = (e: DragEvent) => {
     e.preventDefault();
     const indicators = getIndicators();
 
@@ -182,7 +177,7 @@ const MacDock = () => {
     removeHighlights();
   };
 
-  const handleDragStart = (e: DragEvent, itemId: string) => {
+  const handleDragStart = (e: DragEvent<Element>, itemId: string) => {
     e.dataTransfer.setData("itemId", itemId.toString()); // Store the item's key or any relevant data
   };
   return (
@@ -207,109 +202,14 @@ const MacDock = () => {
           index={idx}
           mouseX={mouseX}
           totalItems={items.length}
-        />
+        >
+          <DockItem.DockItemIcon />
+          <DockItemWindow>
+            <div className="">lorem</div>
+          </DockItemWindow>
+        </DockItem>
       ))}
     </motion.div>
-  );
-};
-
-type DockItemProps = {
-  imgUrl: string;
-  title: string;
-  index: number;
-  mouseX: MotionValue;
-  totalItems: number;
-  id: string;
-  handleDragStart: (e: DragEvent, itemId: string) => void;
-};
-
-const DockItem = ({
-  id,
-  imgUrl,
-  title,
-  index,
-  mouseX,
-  totalItems,
-  handleDragStart,
-}: DockItemProps) => {
-  const parentRef = useRef<HTMLDivElement>(null);
-  const [scope, animate] = useAnimate();
-  const scale = useTransform(mouseX, (x) => {
-    if (x === null || !parentRef.current) return 1; // Default scale
-    const { width } = parentRef.current.parentElement!.getBoundingClientRect(); // ✅ Use parent div width
-    const itemWidth = width / totalItems;
-    const itemCenter = index * itemWidth + itemWidth / 2; // ✅ Correct center calculation
-    // Distance from mouse to the center of this item
-    const distance = Math.abs(x - itemCenter);
-
-    // Normalize distance: Closer items scale more, farther ones less
-    const maxScale = 1.1;
-    const minScale = 1;
-    const falloff = itemWidth * 1.2; // ✅ Increased range for smooth effect
-
-    return (
-      minScale + (maxScale - minScale) * Math.max(0, 1 - distance / falloff)
-    );
-  });
-  // const smoothScale = useSpring(scale);
-
-  const handleClickAnimation = async (e: React.MouseEvent) => {
-    const item = e.target as HTMLDivElement;
-    await animate(
-      item,
-      { y: [0, -60, 0, -20, 0, -15, 0] },
-      {
-        duration: 1, // Duration for the full bounce effect
-      }
-    );
-  };
-
-  return (
-    <motion.div
-      ref={parentRef}
-      style={{ scale }}
-      layout={true}
-      onDragStart={(e) => handleDragStart(e as unknown as DragEvent, id)}
-      draggable={true}
-      className="w-12 h-12 item cursor-pointer relative"
-      whileHover={{
-        translateY: -5, // ✅ Keep only translateY for hover effect
-      }}
-      transition={{
-        duration: 0.15, // ✅ Slightly smoother animation
-        layout: {
-          type: "spring",
-        },
-      }}
-    >
-      <DropIndicator beforeId={id} />
-      <MacWindow
-        layoutId={id}
-        windowIcon={
-          <motion.img
-            onClick={handleClickAnimation}
-            ref={scope}
-            src={imgUrl}
-            alt={title}
-            className="object-cover h-full w-full"
-          />
-        }
-        windowContent={<h1>{title}</h1>}
-      >
-        {/* we only pass the icon */}
-      </MacWindow>
-    </motion.div>
-  );
-};
-type DropIndicatorProps = {
-  beforeId: string | null;
-};
-const DropIndicator = ({ beforeId }: DropIndicatorProps) => {
-  return (
-    <span
-      data-before={beforeId?.toString() || "-1"}
-      className="absolute indicator h-full  w-[6px] rounded-full -left-[10px] bg-amber-50/100 opacity-0 transition-all duration-150"
-    />
   );
 };
 

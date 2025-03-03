@@ -6,6 +6,8 @@ import ModalExample from "./examples/ModalExample";
 import AppleButton from "./components/apple/AppleButton";
 import Layout from "./Layout";
 import SharedLayoutAnimation from "./randoms/AnimatingLayouts/SharedLayoutAnimation";
+import ComaprisonSlider from "./components/comparasionSlider/ComaprisonSlider";
+import SvgLinedScroll from "./components/svglines/SvgLinedScroll";
 
 const App = () => {
   return (
@@ -18,12 +20,13 @@ const App = () => {
             <MacBook>
               <MacBook.Screen styles="mac-img">
                 <MacDock />
-                {/* <MacWindow /> */}
               </MacBook.Screen>
             </MacBook>
           }
         />
         <Route path="modal" element={<ModalExample />} />
+        <Route path="comparson-slider" element={<ComaprisonSlider />} />
+        <Route path="svg-lines" element={<SvgLinedScroll />} />
         <Route path="appleButton" element={<AppleButton />} />
         <Route path="testing" element={<SharedLayoutAnimation />} />
       </Route>

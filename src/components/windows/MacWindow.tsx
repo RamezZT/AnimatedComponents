@@ -1,6 +1,7 @@
-import { ReactNode, RefObject, useEffect, useRef, useState } from "react";
-import { MotionStyle, motion } from "framer-motion";
+import { ReactNode, useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import { createPortal } from "react-dom";
+import { Modal } from "../docks/Modal";
 
 type MacWindowProps = {
   windowIcon: ReactNode;
@@ -91,56 +92,6 @@ const MacWindow = ({ windowIcon, windowContent, layoutId }: MacWindowProps) => {
         {windowIcon}
       </span>
       {/* </div> */}
-    </motion.div>
-  );
-};
-
-type ModalProps = {
-  style?: MotionStyle;
-  handleClose: () => void;
-  onMaxmize?: () => void;
-  children?: ReactNode;
-  ref?: RefObject<HTMLDivElement | null>;
-  layoutId: string;
-  drag: boolean;
-  windowContent: ReactNode;
-};
-
-const Modal = ({
-  style,
-  handleClose,
-  windowContent,
-  // ref,
-  layoutId,
-  drag,
-}: ModalProps) => {
-  return (
-    <motion.div
-      drag={drag}
-      dragMomentum={false}
-      layout
-      layoutId={layoutId}
-      style={{ ...style }}
-      className="bg-[#dfdfde] mac-window-shadow flex flex-col"
-      transition={
-        {
-          // duration: 2,
-        }
-      }
-    >
-      <div className="navbar flex gap-2 p-4 border-4 z-10 border-[#9d9d9d] cursor-pointer border-x-0 border-t-0 ">
-        <button
-          onClick={handleClose}
-          className="rounded-full w-6 h-6 bg-red-500 cursor-pointer hover:scale-105"
-        />
-        <button className="rounded-full w-6 h-6 bg-gray-500" />
-        <button className="rounded-full w-6 h-6 bg-green-500" />
-      </div>
-
-      {/* Content */}
-      <div className="bg-white relative text-black flex-1 w-full">
-        {windowContent}
-      </div>
     </motion.div>
   );
 };

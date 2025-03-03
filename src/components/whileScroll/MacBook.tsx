@@ -90,8 +90,8 @@ const MacBook = ({ children }: MacBookProps) => {
           {children}
         </motion.div>
       </motion.div>
-      {/* <div className="min-h-screen"></div>
-      <div className="min-h-screen"></div> */}
+      <div className="min-h-screen"></div>
+      <div className="min-h-screen"></div>
     </div>
   );
 };
@@ -102,7 +102,11 @@ type ScreenProps = {
 };
 
 MacBook.Screen = ({ children, styles }: ScreenProps) => {
-  return <div className={`${styles} w-full h-full relative`}>{children}</div>;
+  return (
+    <motion.div layout className={`${styles} w-full h-full relative mac`}>
+      {children}
+    </motion.div>
+  );
 };
 
 export default MacBook;
