@@ -8,6 +8,10 @@ import Layout from "./Layout";
 import SharedLayoutAnimation from "./randoms/AnimatingLayouts/SharedLayoutAnimation";
 import ComaprisonSlider from "./components/comparasionSlider/ComaprisonSlider";
 import SvgLinedScroll from "./components/svglines/SvgLinedScroll";
+import Flex from "./randoms/Flex/Flex";
+import reactDocsItems from "./dummyData";
+// import AnimatedList from "./components/Lists/AnimatedList";
+import AnimatedList from "./bitsComponents/AnimatedList/AnimatedList";
 
 const App = () => {
   return (
@@ -29,6 +33,12 @@ const App = () => {
         <Route path="svg-lines" element={<SvgLinedScroll />} />
         <Route path="appleButton" element={<AppleButton />} />
         <Route path="testing" element={<SharedLayoutAnimation />} />
+        <Route path="flex" element={<Flex />} />
+        <Route
+          path="animated-list"
+          // element={<AnimatedList items={reactDocsItems} />}
+          element={<AnimatedList />}
+        />
       </Route>
     </Routes>
   );

@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router";
 
 const Home = () => {
@@ -43,6 +42,12 @@ const Home = () => {
           className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
         >
           SVG Lines
+        </Link>
+        <Link
+          to="animated-list"
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+        >
+          Animated List
         </Link>
       </div>
     </div>

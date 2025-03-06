@@ -21,19 +21,43 @@
   font-style: normal;
 }
 
-.center-absolute {
-  @apply left-[50%] -translate-x-[50%] top-[50%] -translate-y-[50%];
+@layer components {
+  .center-absolute {
+    @apply top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%];
+  }
+
+  .mac-img {
+    background-image: url("/src/assets/wallpapers/mac.jpg");
+  }
+
+  .mac-window-shadow {
+    /* -webkit-box-shadow: 0px 6px 9px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 6px 9px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 6px 9px 0px rgba(0, 0, 0, 0.75); */
+    -webkit-box-shadow: 0px 15px 9px -9px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 15px 9px -9px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 15px 9px -9px rgba(0, 0, 0, 0.75);
+  }
 }
 
-.mac-img {
-  background-image: url("/src/assets/wallpapers/mac.jpg");
+@layer components {
+  .custom-text {
+    @apply text-5xl!;
+  }
 }
 
-.mac-window-shadow {
-  /* -webkit-box-shadow: 0px 6px 9px 0px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 0px 6px 9px 0px rgba(0, 0, 0, 0.75);
-  box-shadow: 0px 6px 9px 0px rgba(0, 0, 0, 0.75); */
-  -webkit-box-shadow: 0px 15px 9px -9px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 0px 15px 9px -9px rgba(0, 0, 0, 0.75);
-  box-shadow: 0px 15px 9px -9px rgba(0, 0, 0, 0.75);
+/* @layer utilities {
+  text-xs {
+    @apply text-xs text-black!;
+  }
+} */
+
+@utility content-hidden {
+  content-visibility: hidden;
+}
+
+@layer utilities {
+  .text-xs {
+    @apply text-5xl text-black;
+  }
 }
