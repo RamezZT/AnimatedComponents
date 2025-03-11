@@ -2,7 +2,7 @@ import "./index.css";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import useDebounceCallback from "../../customhooks/useDebounceCallback";
-import { motion } from "motion/react";
+import { motion, useMotionValue } from "motion/react";
 import { ReactDocItemType } from "../../dummyData";
 import { levenshteinDistance } from "../../utils/searchUtils";
 type AnimatedListProps = {
@@ -19,7 +19,7 @@ const filterItems = (items: ReactDocItemType[], search: string) => {
       const name = item.name.toLowerCase();
       const words = name.split(/\s+/); // Split name into words
       const distances = words.map((word) =>
-        levenshteinDistance(normalizedSearch, word)
+        levenshteinDistance(normalizedSearch, word),
       );
 
       const minDistance = Math.min(...distances);
@@ -43,9 +43,9 @@ const AnimatedList = ({ items }: AnimatedListProps) => {
   }, [searchTerm, items]);
 
   return (
-    <div className="w-full min-h-screen bg-white relative">
+    <div className="relative min-h-screen w-full bg-purple-900">
       <motion.div
-        className="left-[50%] translate-x-[-50%] top-[20%] "
+        className="top-[20%] left-[50%] translate-x-[-50%]"
         style={{
           borderRadius: "12px",
           maxHeight: "32rem",
@@ -74,7 +74,7 @@ const AnimatedList = ({ items }: AnimatedListProps) => {
         >
           {searchResults.length === 0 && searchTerm !== "" ? (
             <motion.div>
-              <h2 className="text-md text-center p-4">
+              <h2 className="text-md text-center">
                 No Results for: {searchTerm}
               </h2>
             </motion.div>
@@ -90,7 +90,7 @@ const AnimatedList = ({ items }: AnimatedListProps) => {
             ))
           )}
         </motion.div>
-        {searchResults.length !== 0 && <div className="bottom-gradient" />}
+        <>{searchResults.length !== 0 && <div className="bottom-gradient" />}</>
       </motion.div>
     </div>
   );
@@ -100,9 +100,9 @@ type AnimatedListItemProps = ReactDocItemType & { idx: number };
 const AnimatedListItem = ({ name, path, idx }: AnimatedListItemProps) => {
   return (
     <motion.div
-      className="p-4 bg-neutral-800 font-bold rounded-xl"
+      className="rounded-xl bg-neutral-800 p-4 font-bold"
       layout
-      initial={{ translateY: 60, opacity: 0, scale: 0.7 }}
+      // initial={{ translateY: 60, opacity: 0, scale: 0.7 }}
       animate={{ opacity: 1, translateY: 0 }}
       transition={{
         ease: "easeInOut",
@@ -112,6 +112,9 @@ const AnimatedListItem = ({ name, path, idx }: AnimatedListItemProps) => {
       }}
       style={{
         marginTop: idx === 0 ? "0.5rem" : "",
+        marginLeft: "0.5rem",
+        marginRight: "0.5rem",
+        scale: 0.7,
       }}
     >
       <motion.h1 className="text-xl">{name}</motion.h1>
@@ -136,7 +139,7 @@ const SearchBar = ({ setSearchTerm }: SearchBarProps) => {
   return (
     <motion.div className="relative flex items-center gap-1 px-2">
       <motion.span
-        className="w-full bg-white absolute bottom-0 left-0"
+        className="absolute bottom-0 left-0 w-full bg-white"
         animate={{
           scale: searchValue === "" ? 0 : 1,
           borderBottom: searchValue === "" ? "0px solid" : "1px solid",
@@ -147,7 +150,7 @@ const SearchBar = ({ setSearchTerm }: SearchBarProps) => {
       <input
         type="text"
         placeholder="Search the docs"
-        className="outline-0 placeholder:text-neutral-500 placeholder:text-2xl text-2xl p-2 flex-1"
+        className="flex-1 p-2 text-2xl outline-0 placeholder:text-2xl placeholder:text-neutral-500"
         value={searchValue}
         onChange={handleInputValueChange}
       />

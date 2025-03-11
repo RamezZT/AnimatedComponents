@@ -15,7 +15,7 @@ src/randoms
 
 test.js
 src/bitsComponents
-
+src/frontendi.yi
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

@@ -10,8 +10,18 @@ import ComaprisonSlider from "./components/comparasionSlider/ComaprisonSlider";
 import SvgLinedScroll from "./components/svglines/SvgLinedScroll";
 import Flex from "./randoms/Flex/Flex";
 import reactDocsItems from "./dummyData";
-// import AnimatedList from "./components/Lists/AnimatedList";
-import AnimatedList from "./bitsComponents/AnimatedList/AnimatedList";
+import AnimatedList from "./components/Lists/AnimatedList";
+import VariantsComponent from "./frontendi.yi/variants";
+import ResponsiveAnimations from "./frontendi.yi/MakingAnimationsResponsive/App";
+import Test, { Test1 } from "./frontendi.yi/PutYourSkillsToTest/Test";
+import ExcerciseInView from "./frontendi.yi/WhileInView/InViewExcercise";
+import Test2 from "./frontendi.yi/PutYourSkillsToTest/Test2";
+import Sticky from "./frontendi.yi/Stickys/StickyOne";
+import InterStellar from "./frontendi.yi/Layout/InterStellar";
+import Modal from "./frontendi.yi/Layout/Modal";
+import SongModal from "./frontendi.yi/Layout/SongModal";
+import SongApp from "./frontendi.yi/Layout/SongApp/SongApp";
+// import AnimatedList from "./bitsComponents/AnimatedList/AnimatedList";
 
 const App = () => {
   return (
@@ -36,9 +46,19 @@ const App = () => {
         <Route path="flex" element={<Flex />} />
         <Route
           path="animated-list"
-          // element={<AnimatedList items={reactDocsItems} />}
-          element={<AnimatedList />}
+          element={<AnimatedList items={reactDocsItems} />}
+          // element={<AnimatedList />}
         />
+        <Route path="shit" element={<VariantsComponent />} />
+        <Route path="responsive" element={<ResponsiveAnimations />} />
+        <Route path="test1" element={<Test />} />
+        <Route path="test2" element={<Test2 />} />
+        <Route path="sound" element={<ExcerciseInView />} />
+        <Route path="sticky" element={<Sticky />} />
+        <Route path="inter" element={<InterStellar />} />
+        <Route path="modall" element={<Modal />} />
+        <Route path="songs" element={<SongModal />} />
+        <Route path="ramezSongs" element={<SongApp />} />
       </Route>
     </Routes>
   );
